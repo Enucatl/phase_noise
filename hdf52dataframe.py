@@ -24,15 +24,19 @@ if __name__ == '__main__':
     file_name = args.file[0]
     input_file = h5py.File(file_name, "r")
     input_group = input_file["postprocessing"]
-    v_0s = input_group["flat_parameters"][0, ..., 1]
+    v_0s = input_group["visibility"][0, ...]
     n_0s = np.sum(input_group["flat_phase_stepping_curves"][0, ...], axis=-1)
     As = input_group["dpc_reconstruction"][0, ..., 0]
     phis = input_group["dpc_reconstruction"][0, ..., 1]
     exposures = [1, 2, 3, 4, 5, 6, 7, 4, 5, 6]
-    print(v_0s.shape)
-    print(n_0s.shape)
-    print(As.shape)
-    print(phis.shape)
-    for pixel in zip(v_0s, n_0s, As, phis):
-        for i, experiment in enumerate(pixel):
-            print(exposures[i // 100], *experiment)
+    print("#pixel exposure v0 n0 a phi")
+    for i in range(phis.shape[0]):
+        for j in range(phis.shape[1]):
+            print(
+                i,
+                exposures[i // 100],
+                v_0s[i, j],
+                n_0s[i, j],
+                As[i, j],
+                phis[i, j]
+            )
