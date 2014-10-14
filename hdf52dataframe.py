@@ -21,6 +21,7 @@ parser.add_argument(
 
 if __name__ == '__main__':
     args = parser.parse_args()
+    lines_per_time = 40
     file_name = args.file[0]
     input_file = h5py.File(file_name, "r")
     input_group = input_file["postprocessing"]
@@ -28,15 +29,20 @@ if __name__ == '__main__':
     n_0s = np.sum(input_group["flat_phase_stepping_curves"][0, ...], axis=-1)
     As = input_group["dpc_reconstruction"][0, ..., 0]
     phis = input_group["dpc_reconstruction"][0, ..., 1]
-    exposures = [1, 2, 3, 4, 5, 6, 7, 4, 5, 6]
-    print("#pixel exposure v0 n0 a phi")
+    Bs = input_group["dpc_reconstruction"][0, ..., 2]
+    exposures = [1, 2, 3, 4, 5, 6, 7]
+    print("pixel exposure v0 n0 A B R phi")
     for i in range(phis.shape[0]):
         for j in range(phis.shape[1]):
+            a = As[i, j]
+            b = Bs[i, j]
             print(
                 i,
-                exposures[i // 100],
+                exposures[j // lines_per_time],
                 v_0s[i, j],
                 n_0s[i, j],
-                As[i, j],
-                phis[i, j]
+                a,
+                b,
+                np.log(b) / np.log(a),
+                phis[i, j],
             )
