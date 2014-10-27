@@ -1,12 +1,15 @@
 #!/usr/bin/env Rscript
 
 library(argparse)
-library(ggplot2)
 library(data.table)
 library(RSQLite)
 
 commandline_parser = ArgumentParser(
         description="draw results for the phase noise analysis")
+
+commandline_parser$add_argument('-b', '--batch',
+            action="store_true",
+            help='show plot')
 
 commandline_parser$add_argument('-f', '--file',
             type='character', nargs='?',
@@ -58,10 +61,13 @@ print(deviations)
 
 print(c(wm_R, wm_P, wm_P_sd))
 
-X11()
-plot <- ggplot(
-    data=deviations[mean_v0 > min_visibility],
-    aes(x=pixel, y=mean_P)) + geom_point(size=1)
-print(plot)
-message("Press Return To Continue")
-invisible(readLines("stdin", n=1))
+if(!args$batch) {
+    library(ggplot2)
+    X11()
+    plot <- ggplot(
+                   data=deviations[mean_v0 > min_visibility],
+                   aes(x=pixel, y=mean_A)) + geom_point(size=1)
+    print(plot)
+    message("Press Return To Continue")
+    invisible(readLines("stdin", n=1))
+}

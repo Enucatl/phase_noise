@@ -40,6 +40,7 @@ by_pixel <- table[,
 
 dataset.driver <- dbDriver("SQLite")
 dataset.file <- sub(".db", "-by-pixel.db", args$file)
+print(dataset.file)
 dataset.connection <- dbConnect(dataset.driver, dbname=dataset.file)
 dbWriteTable(dataset.connection, "by_pixel", by_pixel, overwrite=TRUE)
 dbDisconnect(dataset.connection)
