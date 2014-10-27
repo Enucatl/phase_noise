@@ -7,20 +7,20 @@ import matplotlib.pyplot as plt
 
 materials = [
     {
-        "name": "PMMA",
+        "name": "pmma",
         "formula": "C5O2H8",
         "density": 1.18,  # g / cm 3
     },
     {
-        "name": "Polystyrene",
+        "name": "polystyrene",
         "formula": "C8H8",
         "density": 1.05,  # g / cm 3
     },
-    {
-        "name": "High-density Polyethilene",
-        "formula": "C2H4",
-        "density": 0.97,  # g / cm 3
-    },
+    #{
+        #"name": "hdpe",
+        #"formula": "C2H4",
+        #"density": 0.97,  # g / cm 3
+    #},
 ]
 
 energies = np.arange(10, 200)  # keV
