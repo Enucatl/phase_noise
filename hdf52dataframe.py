@@ -1,5 +1,6 @@
 import h5py
-import os
+import sys
+import csv
 import argparse
 import numpy as np
 
@@ -28,21 +29,21 @@ if __name__ == '__main__':
     v_0s = input_group["visibility"][0, ...]
     n_0s = np.sum(input_group["flat_phase_stepping_curves"][0, ...], axis=-1)
     As = input_group["dpc_reconstruction"][0, ..., 0]
-    phis = input_group["dpc_reconstruction"][0, ..., 1]
+    Ps = input_group["dpc_reconstruction"][0, ..., 1]
     Bs = input_group["dpc_reconstruction"][0, ..., 2]
     exposures = [1, 2, 3, 4, 5, 6, 7]
-    print("pixel exposure v0 n0 A B R phi")
-    for i in range(phis.shape[0]):
-        for j in range(phis.shape[1]):
-            a = As[i, j]
-            b = Bs[i, j]
-            print(
-                i,
-                exposures[j // lines_per_time],
-                v_0s[i, j],
-                n_0s[i, j],
-                a,
-                b,
-                np.log(b) / np.log(a),
-                phis[i, j],
-            )
+    writer = csv.writer(sys.stdout)
+    writer.writerow(["pixel", "exposure", "v0", "n0", "A", "B", "R", "P"])
+    writer.writerows([
+        i,
+        exposures[j // lines_per_time],
+        v_0s[i, j],
+        n_0s[i, j],
+        As[i, j],
+        Bs[i, j],
+        np.log(Bs[i, j]) / np.log(As[i, j]),
+        Ps[i, j],
+    ]
+        for i in range(Ps.shape[0])
+        for j in range(Ps.shape[1])
+    )
