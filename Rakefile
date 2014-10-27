@@ -1,10 +1,12 @@
-task :default => [:dataframes, :theoretical_delta]
+task :default => [:theoretical_delta, :json]
 
 task :dataframes => FileList["*.hdf5"].ext(".csv")
 
 task :aggregate => FileList["*.hdf5"].ext(".db")
 
 task :by_pixel => FileList["*.hdf5"].ext("-by-pixel.db")
+
+task :json => FileList["*.hdf5"].ext(".json")
 
 rule '.csv' => ['.hdf5', 'hdf52dataframe.py'] do |t|
   sh "python #{t.prerequisites[1]} #{t.source} > #{t.name}"

@@ -3,6 +3,7 @@
 library(argparse)
 library(data.table)
 library(RSQLite)
+library(rjson)
 
 commandline_parser = ArgumentParser(
         description="subtract the phase values from the two files")
@@ -44,12 +45,15 @@ table2[, sd_diff_P:=min(c(0.001, abs(diff_P) * sqrt((sd_P / mean_P)^2 +
 
 min_visibility <- 0.04
 print(table2)
-print(min(table2[mean_v0 > min_visibility, sd_diff_P]))
-print(max(table2[mean_v0 > min_visibility, sd_diff_P]))
 
-print(weighted.mean(
-        table2[mean_v0 > min_visibility, diff_P],
-        table2[mean_v0 > min_visibility, sd_diff_P^(-2)]))
+mean_P <- mean(table2[mean_v0 > min_visibility, diff_P])
+sd_P <- sd(table2[mean_v0 > min_visibility, diff_P])
+
+output <- list(mean_P=mean_P, sd_P=sd_P)
+output_file_name <- sub("-by-pixel.db", ".json", args$first)
+sink(output_file_name)
+cat(toJSON(output))
+sink()
 
 if(!args$batch) {
     library(ggplot2)
