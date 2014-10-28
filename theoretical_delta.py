@@ -16,11 +16,11 @@ materials = [
         "formula": "C8H8",
         "density": 1.05,  # g / cm 3
     },
-    #{
-        #"name": "hdpe",
-        #"formula": "C2H4",
-        #"density": 0.97,  # g / cm 3
-    #},
+    {
+        "name": "hdpe",
+        "formula": "C2H4",
+        "density": 0.97,  # g / cm 3
+    },
 ]
 
 energies = np.arange(10, 200)  # keV
