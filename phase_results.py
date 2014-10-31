@@ -25,7 +25,7 @@ if __name__ == '__main__':
         experimental_data = json.load(open(experimental_data))
         print()
         print(material["name"])
-        print("theoretical P: {0:.4f}".format(delta2p(deltas[40, i])))
+        print("theoretical P: {0:.4f}".format(delta2p(deltas[41, i])))
         print("experimental P: {0:.4f} ± {1:.4f}".format(
             0.5 * experimental_data["mean_P"],
             0.5 * experimental_data["sd_P"]

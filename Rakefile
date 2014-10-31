@@ -5,7 +5,8 @@ task :default => [
   :dataframes,
   :aggregate,
   :by_pixel,
-  :json
+  :json,
+  "by-pixel.csv"
 ]
 
 task :dataframes => FileList["*.hdf5"].ext(".csv")
@@ -20,10 +21,15 @@ task :json => :by_pixel
 task :by_pixel => :aggregate
 task :aggregate => :dataframes
 
+file "by-pixel.csv" => FileList["*.hdf5"].ext(".db").include("visibility.R") do |t|
+  sh "./#{t.prerequisites[-1]} -f #{t.prerequisites[0..-2].join(" ")} -o by-pixel.csv"
+end
+
 CLEAN.include FileList["*.hdf5"].pathmap("%X-by-pixel.db")
 CLEAN.include FileList["*.hdf5"].ext(".db")
 CLEAN.include FileList["*.hdf5"].ext(".csv")
 CLOBBER.include FileList["*.hdf5"].ext(".json")
+CLOBBER << "by-pixel.csv"
 
 rule '.csv' => ['.hdf5', 'hdf52dataframe.py'] do |t|
   sh "python #{t.prerequisites[1]} #{t.source} > #{t.name}"
