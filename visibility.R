@@ -27,5 +27,5 @@ get_table = function(file.name) {
 }
 
 comp.table = rbindlist(lapply(args$file, get_table))[,
-    list(pixel, exposure, mean_v0, mean_R, relative_prediction_error)]
+    list(pixel, exposure, mean_v0, mean_R, mean_A, relative_prediction_error)]
 write.csv(comp.table, args$output)
