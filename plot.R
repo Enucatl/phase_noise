@@ -51,6 +51,28 @@ ggsave(
        plot=R_distribution,
        width=width, height=height, dpi=dpi)
 
+# relative_prediction_error_flat_only vs mean_B
+relative_prediction_error_flat_only <- ggplot(table[mean_v0 > 0.04,], aes(x=mean_B,
+                                                     y=relative_prediction_error_flat_only)) +
+    geom_point(size=1, color=color) +
+    scale_x_continuous("dark field") +
+    scale_y_continuous("relative prediction error", labels=percent)
+ggsave(
+       file="relative_prediction_error_flat_only_meanB.png",
+       plot=relative_prediction_error_flat_only,
+       width=width, height=height, dpi=dpi)
+
+# relative_prediction_error_flat_only vs mean_A
+relative_prediction_error_flat_only <- ggplot(table[mean_v0 > 0.04,], aes(x=mean_A,
+                                                     y=relative_prediction_error_flat_only)) +
+    geom_point(size=1, color=color) +
+    scale_x_continuous("A") +
+    scale_y_continuous("relative prediction error", labels=percent)
+ggsave(
+       file="relative_prediction_error_flat_only.png",
+       plot=relative_prediction_error_flat_only,
+       width=width, height=height, dpi=dpi)
+
 # relative_prediction_error vs mean_A
 relative_prediction_error <- ggplot(table[mean_v0 > 0.04,], aes(x=mean_A,
                                                      y=relative_prediction_error)) +
@@ -60,4 +82,37 @@ relative_prediction_error <- ggplot(table[mean_v0 > 0.04,], aes(x=mean_A,
 ggsave(
        file="relative_prediction_error.png",
        plot=relative_prediction_error,
+       width=width, height=height, dpi=dpi)
+
+# sd_P vs mean_A
+sd_P <- ggplot(table[mean_v0 > 0.04,], aes(x=mean_A,
+                                                     y=sd_P)) +
+    geom_point(size=1, color=color) +
+    scale_x_continuous("A") +
+    scale_y_continuous("sd P")
+ggsave(
+       file="sd_P.png",
+       plot=sd_P,
+       width=width, height=height, dpi=dpi)
+
+# sd_P vs mean_A
+sd_P_exposure <- ggplot(table[mean_v0 > 0.04,], aes(x=exposure,
+                                                     y=sd_P)) +
+    geom_point(size=1, color=color) +
+    scale_x_continuous("exposure") +
+    scale_y_continuous("sd P")
+ggsave(
+       file="sd_P_exposure.png",
+       plot=sd_P_exposure,
+       width=width, height=height, dpi=dpi)
+
+# sd_P vs mean_n0
+sd_P_mean_n0 <- ggplot(table[mean_v0 > 0.04,], aes(x=mean_n0,
+                                                     y=sd_P)) +
+    geom_point(size=1, color=color) +
+    scale_x_continuous("n0") +
+    scale_y_continuous("sd P")
+ggsave(
+       file="sd_P_mean_n0.png",
+       plot=sd_P_mean_n0,
        width=width, height=height, dpi=dpi)

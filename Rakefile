@@ -6,7 +6,8 @@ task :default => [
   :aggregate,
   :by_pixel,
   :json,
-  "by-pixel.csv"
+  "by-pixel.csv",
+  :plot
 ]
 
 task :dataframes => FileList["*.hdf5"].ext(".csv")
@@ -20,6 +21,9 @@ task :json => FileList["*.hdf5"].exclude("*-inv.hdf5").ext(".json")
 task :json => :by_pixel
 task :by_pixel => :aggregate
 task :aggregate => :dataframes
+task :plot => ["plot.R", :by_pixel] do |t|
+  sh "./#{t.prerequisites[0]} -f by-pixel.csv"
+end
 
 file "by-pixel.csv" => FileList["*.hdf5"].ext(".db").include("visibility.R") do |t|
   sh "./#{t.prerequisites[-1]} -f #{t.prerequisites[0..-2].join(" ")} -o by-pixel.csv"

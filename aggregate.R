@@ -43,7 +43,16 @@ deviations <- deviations[,
         1 / (mean_v0 * sqrt(mean_n0) * mean_A ^ (wm_R + 0.5))
     ), by=key(deviations)]
 deviations <- deviations[,
+    expected_sd_P_flat_only := (
+        2 / (mean_v0 * sqrt(mean_n0))
+    ), by=key(deviations)]
+deviations <- deviations[,
     relative_prediction_error := (expected_sd_P - sd_P) / expected_sd_P,
+    by=key(deviations)]
+deviations <- deviations[,
+    relative_prediction_error_flat_only := (
+        (expected_sd_P_flat_only - sd_P)
+            / expected_sd_P_flat_only),
     by=key(deviations)]
 
 dataset.driver <- dbDriver("SQLite")
