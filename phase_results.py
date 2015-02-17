@@ -18,6 +18,8 @@ def p2delta(P, p=2.8e-4, D=18.9, tan_theta=0.75):
     """
     return p * P / (2 * np.pi * D * tan_theta)
 
+energy_index = 44
+
 if __name__ == '__main__':
     deltas = np.load("deltas_table.npy")
     experimental = []
@@ -26,7 +28,7 @@ if __name__ == '__main__':
         experimental_data = json.load(open(experimental_data))
         print()
         print(material["name"])
-        print("theoretical P: {0:.4f}".format(delta2p(deltas[41, i])))
+        print("theoretical P: {0:.4f}".format(delta2p(deltas[energy_index, i])))
         print("experimental P: {0:.4f} ± {1:.4f}".format(
             0.5 * experimental_data["mean_P"],
             0.5 * experimental_data["sd_P"]
@@ -35,13 +37,13 @@ if __name__ == '__main__':
             "value": 0.5 * experimental_data["mean_P"],
             "error": 0.5 * experimental_data["sd_P"]
         })
-        print("theoretical delta: {0:.3g}".format(deltas[41, i]))
+        print("theoretical delta: {0:.3g}".format(deltas[energy_index, i]))
         print("experimental delta: {0:.3g} ± {1:.3g}".format(
             p2delta(0.5 * experimental_data["mean_P"]),
             p2delta(0.5 * experimental_data["sd_P"])
         ))
         print("theoretical ratio with pmma: {0:.2f}".format(
-            deltas[41, i] / deltas[41, 0]))
+            deltas[energy_index, i] / deltas[energy_index, 0]))
         print()
     r1 = experimental[1]["value"] / experimental[0]["value"]
     r2 = experimental[2]["value"] / experimental[0]["value"]
